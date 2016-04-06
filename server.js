@@ -1,11 +1,25 @@
-var io = require ('socket.io'),
-    http = require('http'),
-    server = http.createServer();
-    io = io.listen(server);
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var app = express();
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io')(server);
 
-// app.get('/', function(req, res){
-//   res.send('<h1>Hello world</h1>');
-// });
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+
+/* GET home page. */
+app.get('/', function(req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Server Hosted on Heroku\n');
+});
 
 io.on('connection', function(socket) {
     console.log('a user connected');
@@ -23,3 +37,5 @@ io.on('connection', function(socket) {
 server.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+module.exports = app;
