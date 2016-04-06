@@ -23,17 +23,19 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket) {
     console.log('a user connected');
-    
+
     socket.on('disconnect', function() {
         console.log('user disconnected');
     });
-    
+
     socket.on('chat message', function(msg) {
         console.log('message: ' + msg);
         io.emit('chat message', msg);
     })
 });
 
-server.listen(process.env.PORT || 5001);
+var listener = server.listen(process.env.PORT, function() {
+    console.log('Listening on port ' + server.address().port);
+});
 
 module.exports = app;
