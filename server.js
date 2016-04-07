@@ -28,10 +28,10 @@ io.on('connection', function(socket) {
         console.log('user disconnected');
     });
 
-    socket.on('chat message', function(msg) {
+    socket.on('message', function(msg) {
         console.log('message: ' + msg);
-        io.emit('chat message', msg);
-    })
+        io.emit('message', msg);
+    });
 });
 
 var listener = server.listen(process.env.PORT, function() {
