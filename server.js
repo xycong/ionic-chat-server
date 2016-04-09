@@ -27,7 +27,8 @@ var rooms = [];
 
 io.sockets.on('connection', function(socket) {
     var addedUser = false;
-
+    
+    // DONE
     socket.on('add user', function(username) {
         if (addedUser) return;
 
@@ -37,7 +38,7 @@ io.sockets.on('connection', function(socket) {
         ++numUsers;
         addedUser = true;
     });
-
+    
     socket.on('subscribe', function(room) {
         console.log('subscribe');
         socket.join(room);
