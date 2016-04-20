@@ -1,23 +1,26 @@
 {
-    "name": "ionic-chat-server",
-    "version": "0.0.1",
-    "main": "server.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
-    },
-    "dependencies": {
-        "express": "^4.13.4",
-        "morgan": "^1.7.0",
-        "nodemon": "^1.9.1",
-        "socket.io": "^1.4.5",
-        "body-parser": "^1.15.0",
-        "cookie-parser": "^1.4.1",
-        "cors": "^2.7.1",
-        "errorhandler": "^1.4.3",
-        "serve-favicon": "^2.3.0"
-    },
-    "engines": {
-        "node": "5.10.0"
-    }
+  "name": "ionic-chat-server",
+  "version": "0.0.1",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "cors": "^2.7.1",
+    "dotenv": "^2.0.0",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^5.7.0",
+    "lodash": "^4.11.1",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.9.1",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.5"
+  },
+  "engines": {
+    "node": "5.10.0"
+  }
 }

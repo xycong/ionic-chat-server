@@ -1,0 +1,24 @@
+{
+    "board": {
+        "_id": 1235123761631211123,
+        "board_name": "Ionic",
+        "board_multi": false,
+        "user_id": 98716387173688712,
+        "participants": [{"user_id": 123121241242112}, {"user_id": 1144353452128}],
+        "created_on": "1999-01-08 04:05:06",
+        "last_updated": "2012-01-10 05:05:05"
+    },
+    "user": {
+        "_id": 1235123761631211123,
+        "username": "xycong",
+        "points": 1231,
+        "socket_id": 123123123123
+    },
+    "message": {
+        "_id": 1235123761631211123,
+        "message": "This is a neat app",
+        "board_id": 98716387173688712,
+        "user_id": 12313123198123123,
+        "created_on": "1999-01-08 04:05:06"
+    }
+}
