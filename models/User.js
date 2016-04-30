@@ -1,40 +1,58 @@
 var db = require('../db');
 var collection = db.get().collection('users');
 var jwt = require('../jwt');
+var haikunate = require('haikunator');
+var ObjectID = require('mongodb').ObjectID;
 
 exports.saveUser = function (user, callback) {
+    console.log(user);
     if (!user.username || !user.password) {
         // Did not send either username or password
-        callback(400, 'You must send the username and the password', null);
+        callback('You must send the username and the password', null);
     }
     collection.findOne({ 'username': user.username }, function (err, docs) {
         if (docs != null) {
             // User already exists
-            callback(400, 'A user with that username already exists', null);
+            callback('A user with that username already exists', null);
         }
-        collection.save(user);
-        callback(201, null, jwt.sign(docs));
+
+        var display_name = haikunate({ tokenLength: 0, delimiter: "" });
+        user.display_name = display_name;
+        collection.save(user, function (err, results) {
+            console.log('New user!');
+            console.log(results);
+            callback(null, jwt.sign(results.ops[0]));
+        });
     });
 }
 
 exports.createSession = function (user, callback) {
-    if (!user.username || !user.password) {
-        // Did not send either username or password
-        callback(400, 'You must send the username and the password', null);
-    }
-    collection.findOne({ 'username': user.username }, function (err, docs) {
-        if (docs == null) {
-            // User does not exist
-            callback(400, 'The username or password do not match', null);
+    console.log(user);
+    // if (!user.username || !user.password) {
+    //     // Did not send either username or password
+    //     callback('You must send the username and the password', null);
+    // }
+    // collection.findOne({ 'username': user.username }, function (err, docs) {
+    //     if (docs == null) {
+    //         // User does not exist
+    //         callback('The username or password is incorrect', null);
+    //     }
+    //     else if (user.password != docs.password) {
+    //         callback('The username or password is incorrect', null);
+    //     }
+    // });
+    collection.findAndModify(
+        { username: user.username },     // query
+        [],               // represents a sort order if multiple matches
+        { $set: { socket_id: user.socket_id } },   // update statement
+        { new: true },    // options - new to return the modified document
+        function (err, doc) {
+            console.log('Existing user!');
+            console.log(doc);
+            callback(null, jwt.sign(doc.value));
         }
-        else if (user.password !== docs.password) {
-            // Passwords do not match
-            callback(400, 'The username or password do not match', null);
-        }
-        callback(201, null, jwt.sign(docs));
-    })
+    );
 }
-
 
 exports.getUsers = function (callback) {
     collection.find().toArray(function (err, docs) {

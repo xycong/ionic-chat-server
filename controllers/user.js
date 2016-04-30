@@ -3,20 +3,14 @@ var User = require('../models/User');
 var router = express.Router();
 
 router.post('/', function (req, res) {
-    User.saveUser(req.body, function (status, err, token) {
-        if (err) {
-            res.status(status).send(err);
-        }
-        res.status(status).send({ id_token: token });
+    User.saveUser(req.body, function (err, token) {
+        res.send({ id_token: token });
     });
 });
 
 router.post('/sessions/create', function (req, res) {
-    User.createSession(req.body, function (status, err, token) {
-        if (err) {
-            res.status(status).send(err);
-        }
-        res.status(status).send({ id_token: token });
+    User.createSession(req.body, function (err, token) {
+        res.send({ id_token: token });
     });
 });
 
