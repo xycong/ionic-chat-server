@@ -61,9 +61,10 @@ db.connect(mongoURL, function (err) {
         socket.on('message', function (data) {
             var room_id = data.room_id;
             io.to(room_id).emit('message', {
-                user_id: data.user_id,
+                user: data.user,
                 message: data.message,
-                timestamp: data.timestamp
+                timestamp: data.timestamp,
+                points: data.points
             });
         });
 
