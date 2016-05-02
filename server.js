@@ -13,7 +13,8 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 var db = require('./db');
 var topics = require('./models/Topic');
-var mongoURL = 'mongodb://127.0.0.1/discord';
+// var mongoURL = 'mongodb://127.0.0.1/discord';
+var mongoURL = 'mongodb://root:root@ds013931.mlab.com:13931/discord';
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
