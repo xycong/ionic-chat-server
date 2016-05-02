@@ -12,6 +12,7 @@ var dotenv = require('dotenv');
 var server = http.createServer(app);
 var io = require('socket.io')(server);
 var db = require('./db');
+var topics = require('./models/Topic');
 var mongoURL = 'mongodb://127.0.0.1/discord';
 
 app.use(logger('dev'));
@@ -37,17 +38,48 @@ db.connect(mongoURL, function (err) {
     console.log('Database connection ready');
     app.use('/users', require('./controllers/user'));
     app.use('/rooms', require('./controllers/room'));
-    
+
     io.sockets.on('connection', function (socket) {
         console.log('connected: ' + socket.id);
-        socket.on('say to someone', function(id, msg){
-            socket.broadcast.to(id).emit('message', msg);
+
+        socket.on('subscribe', function (data) {
+            var room_id = data.room_id;
+            socket.join(room_id);
+            var room = io.sockets.adapter.rooms[room_id];
+            if (room.length == 2) {
+                console.log('Server ready');
+                io.to(room_id).emit('ready');
+            }
         });
-        
+
+        socket.on('user', function (data) {
+            var room_id = data.room_id;
+            socket.broadcast.to(room_id).emit('share user', data.user);
+        });
+
         socket.on('message', function (data) {
-            console.log(data);
-            io.emit('message', data.message);
+            var room_id = data.room_id;
+            io.to(room_id).emit('message', {
+                user_id: data.user_id,
+                message: data.message,
+                timestamp: data.timestamp
+            });
         });
+
+        socket.on('reconnect', function (data) {
+            var room_id = data.room_id;
+            io.broadcast.to(room_id).emit('reconnect');
+        });
+
+        socket.on('unsubscribe', function (data) {
+            var room_id = data.room_id;
+            socket.leave(room_id);
+        });
+
+        socket.on('help', function (data) {
+            var room_id = data.room_id;
+            io.to(room_id).emit('topic', topics.generateTopic());
+        })
     });
 
     var port = process.env.PORT || 3000;

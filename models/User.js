@@ -18,6 +18,7 @@ exports.saveUser = function (user, callback) {
 
         var display_name = haikunate({ tokenLength: 0, delimiter: "" });
         user.display_name = display_name;
+        user.points = 0;
         collection.save(user, function (err, results) {
             console.log('New user!');
             console.log(results);
@@ -47,9 +48,15 @@ exports.createSession = function (user, callback) {
         { $set: { socket_id: user.socket_id } },   // update statement
         { new: true },    // options - new to return the modified document
         function (err, doc) {
-            console.log('Existing user!');
-            console.log(doc);
-            callback(null, jwt.sign(doc.value));
+            if (doc.value == null) {
+                callback('The username or password is incorrect', null);
+            }
+            else if (user.password != doc.value.password) {
+                callback('The username or password is incorrect', null);
+            }
+            else {
+                callback(null, jwt.sign(doc.value));
+            }
         }
     );
 }
@@ -61,7 +68,7 @@ exports.getUsers = function (callback) {
 }
 
 exports.getUser = function (user_id, callback) {
-    collection.findOne({ '_id': user_id }, function (err, docs) {
+    collection.findOne({ _id: ObjectID(user_id) }, function (err, docs) {
         callback(err, docs);
     });
 }

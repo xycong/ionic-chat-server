@@ -10,7 +10,12 @@ router.post('/', function (req, res) {
 
 router.post('/sessions/create', function (req, res) {
     User.createSession(req.body, function (err, token) {
-        res.send({ id_token: token });
+        if (err) {
+            res.send({ err: err });
+        }
+        else {
+            res.send({ id_token: token });
+        }
     });
 });
 
