@@ -35,12 +35,3 @@ exports.destroyRoom = function (room_id, id, callback) {
             callback(err, docs);
         });
 }
-
-            // if (room.value.users.length == 2) {
-            //     User.getUser(room.value.users[0], function (err, user) {
-            //         room.user = user;
-            //         callback(err, room);
-            //     });
-            // }
-            // else {
-            // }

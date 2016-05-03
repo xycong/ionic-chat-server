@@ -29,19 +29,6 @@ exports.saveUser = function (user, callback) {
 
 exports.createSession = function (user, callback) {
     console.log(user);
-    // if (!user.username || !user.password) {
-    //     // Did not send either username or password
-    //     callback('You must send the username and the password', null);
-    // }
-    // collection.findOne({ 'username': user.username }, function (err, docs) {
-    //     if (docs == null) {
-    //         // User does not exist
-    //         callback('The username or password is incorrect', null);
-    //     }
-    //     else if (user.password != docs.password) {
-    //         callback('The username or password is incorrect', null);
-    //     }
-    // });
     collection.findAndModify(
         { username: user.username },     // query
         [],               // represents a sort order if multiple matches
